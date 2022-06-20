@@ -1,52 +1,51 @@
 # FAS_Datamager
-This is a tool set for managing 
+This repo can be used to manage publicly available datasets for the face anti-spoofing problem.
+
+
+
+# News
+2022-06-20: Upload the code. Still in development period. More to be Completed.
 
 # Prerequisites
-```
+```sh
 # opencv 
 conda install -c conda-forge opencv
 # pytorch/torchvision 
 conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
 # 
 # mtcnn
-# dlib
-# yaml
 # mxnet + mtcnn (https://github.com/YYuanAnyVision/mxnet_mtcnn_face_detection.git)
 git clone https://github.com/YYuanAnyVision/mxnet_mtcnn_face_detection.git
+pip install mxnet # cpu version is fine
 ```
 
 # Dataset introduction
 According to how the dataset are released and organized here are how these dataset organized
 
 
-|  Dataset name   | Attack types| Release format| Release with raw |
+|  Dataset name   | Attack types| Release format| Release with raw images or videos |
 |  ----  | ----  |   ----  | ----  |
-| CASIA-MFSD  | P, R | videos  | Yes  | 
-| IDIAP ReplayAttack  |  P,R | videos | Yes  |
-| NTU ROSE-YOUTU   |  P, R, PM | videos | Yes  |
-| SiW   | P, R, PM | videos | Yes  |
-| MSU MFSD   P, R, PM | videos  | Yes  |
-| OULU-NPU |   P, R  | videos  | Yes  |
+| CASIA-MFSD (CASIA-FASD)  | P, R | Video  | Yes  | 
+| IDIAP ReplayAttack  |  P,R | Video | Yes  |
+| NTU ROSE-YOUTU   |  P, R, PM | Video | Yes  |
+| SiW   | P, R, PM | Video | Yes  |
+| MSU MFSD|   P, R | Video  | Yes  |
+| OULU-NPU |   P, R  | Video  | Yes  |
 | WMCA |   P, R, M  | HDF5  | No |
 | HQ-WMCA |   P, R, M  | HDF5  | No  |
 | CASIA-SURF |   P, R, M  | HDF5  | No|
-| CASIA-SURF-3DMask |   P, R, M  | HDF5  |
-| WFFD |    |   |
-| CeFA |    | Image  | Yes|
-| PADAISI |    | images  | Yes|
+| CASIA-SURF-3DMask |   P, R, M  | HDF5  | No|
+|CASIA-SURF HIFI_MASK| M|Image|No|
+| WFFD |  P  | Image  | Yes|
+| CeFA |  P,R,M  | Image  | Yes|
+| PADAISI |  P,R,M  | Image  | Yes|
 |HKBU_MAR V2|M |Video | Yes|
-|HIFI_MASK| M|Images|No|
-|CelebA-Spoof|P|images|Yes|
+|CelebA-Spoof|P|Image|Yes|
 
 # Dataset format
-A data list file is in the csv format.
-```csv
-# file path, label
-xxx.avi.zip, 0
-```
+(TODO)
 In terms of the label, 0,1,2,3 mean genuine face, photo attack, video attack, and mask attack, respectively.
 A video, an image, or a folder would be regarded as a unit.
 # Usage
-1. export PYTHONPATH=.
-# Ackowledgement
-The management method of using zip files is inspired by Dr. Sun Wenyun.
+(TODO)
+
