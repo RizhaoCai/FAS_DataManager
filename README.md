@@ -8,6 +8,8 @@ This repo can be used to manage publicly available datasets for the face anti-sp
 
 # Prerequisites
 ```sh
+# requirements
+pip install -r requirements.txt
 # opencv 
 conda install -c conda-forge opencv
 # pytorch/torchvision 
