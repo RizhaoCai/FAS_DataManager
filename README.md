@@ -25,24 +25,24 @@ pip install mxnet # cpu version is fine
 According to how the dataset are released and organized here are how these dataset organized
 
 
-|  Dataset name   | Attack types| Release format| Release with raw images or videos |
+|  Dataset name   | Attack types| Release format| Released with raw images or videos |
 |  ----  | ----  |   ----  | ----  |
-| CASIA-MFSD (CASIA-FASD)  | P, R | Video  | Yes  | 
-| IDIAP ReplayAttack  |  P,R | Video | Yes  |
-| NTU ROSE-YOUTU   |  P, R, PM | Video | Yes  |
-| SiW   | P, R, PM | Video | Yes  |
-| MSU MFSD|   P, R | Video  | Yes  |
-| OULU-NPU |   P, R  | Video  | Yes  |
+| CASIA-MFSD (CASIA-FASD)  | P, R | Video (.avi) | Yes  | 
+| IDIAP ReplayAttack  |  P,R | Video (.avi) | Yes  |
+| NTU ROSE-YOUTU   |  P, R, PM | Video (.mp4) | Yes  |
+| SiW   | P, R, PM | Video (.mov) | Yes  |
+| MSU MFSD|   P, R | Video (.mp4)  | Yes  |
+| OULU-NPU |   P, R  | Video (.avi)  | Yes  |
 | WMCA |   P, R, M  | HDF5  | No |
 | HQ-WMCA |   P, R, M  | HDF5  | No  |
-| CASIA-SURF |   P, R, M  | HDF5  | No|
-| CASIA-SURF-3DMask |   P, R, M  | HDF5  | No|
+| CASIA-SURF |   P | Image (.jpg)  | No|
+| CASIA-SURF-3DMask |   P, R, M  | Video (.MOV)  | No|
 |CASIA-SURF HIFI_MASK| M|Image|No|
-| WFFD |  P  | Image  | Yes|
-| CeFA |  P,R,M  | Image  | Yes|
-| PADAISI |  P,R,M  | Image  | Yes|
-|HKBU_MAR V2|M |Video | Yes|
-|CelebA-Spoof|P|Image|Yes|
+| WFFD |  P  | Image (.jpg)  | Yes|
+| CeFA |  P,R,M  | Image (.jpg) | Yes|
+| PADAISI |  P,R,M  | Image (.jpg)   | Yes|
+|HKBU_MAR V2|M |Video (.avi) | Yes|
+|CelebA-Spoof|P|Image (.png)|Yes|
 
 # Dataset format
 (TODO)
