@@ -54,14 +54,32 @@ Some datasets are released with the raw videos, such as NTU ROSE-YOUTU, CASIA-FA
 We can extract the frames and save the frames as images (.png). 
 ```sh
 export PYTHONPATH=.
-python preliminary/extract_frame_from_video --dataset <Dataset_Name> --root_dir <the directory where you put the original dataset> --save_dir --root_dir <the directory where you save the processed dataset>
+python preliminary/extract_frame_from_video.py --dataset <Dataset_Name> --root_dir <the directory where you put the original dataset> --save_dir --root_dir <the directory where you save the processed dataset>
 ```
 After the extraction, the processed files would have the same folder structure as the raw videos.  
 ## Manage hdf5 datasets
 Some datasets are released with the processed files in the HDF5 format, such as the 3DMAD, CSMAD, and WMCA datasets. 
 The authors told that the raw data is too large to share and thus they process the data (e.g. cropping faces) and store the data in the HDF5 format for release.
-After downloading the datasets (3DMAD, CSMAD, and WMCA dataset), we can use the methods in [datasets/hdf5_datasets.py](datasets/hdf5_datasets.py) to load the data.
+After downloading the datasets (3DMAD, CSMAD, and WMCA dataset), we can use the methods in [datasets/hdf5_dataset.py](datasets/hdf5_dataset.py) to load the data.
 
-
+# generate data list
+We can use a data list file to indicate what images or frames we want to load for training or testing.
+The data list in the below csv format: 
+```csv
+examples/1.png,0
+```
+The first column indicates the path of the image/frame, and the second column indicate image's label. 
+The label format is that '0' means a genuine face/real face, '1' means a printed paper/photo attack, '2' means a replay/screen attack, and '3' means a mask attack.
+For a binary classification network, the labels can be transformed as binary: 0 for real and 1 for fake. 
+Please check [preliminary/generate_data_list.py](preliminary/generate_data_list.py) to see how to generate data list files for different datasets.
+```sh
+python preliminary/generate_data_list.py
+```
+# Get a dataset with a data list
+The file [get_data_list.py](get_data_list.py) implements the functions for getting a dataset from a data list.
+You can run an example with the below command.
+```sh
+python get_dataset .py
+```
 
 
