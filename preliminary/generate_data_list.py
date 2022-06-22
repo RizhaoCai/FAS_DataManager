@@ -105,6 +105,16 @@ def parse_label_by_filename(fn):
         return 1
 
 
+    if 'CASIA_SURF_3DMask' in fn and 'Real' in fn:
+        return 0
+    elif 'CASIA_SURF_3DMask' in fn and 'Fake/1' in fn:
+        return 1
+    elif 'CASIA_SURF_3DMask' in fn and 'Fake/2' in fn:
+        return 2
+    elif 'CASIA_SURF_3DMask' in fn and 'Fake/3' in fn:
+        return 3
+
+
 
 def get_filenames_under_base_dir(base_dir):
     fns = []
@@ -125,7 +135,7 @@ def write_protocol_list_file(base_dir, subset_name, regx, output_dir='./'):
     fns = get_filenames_under_base_dir(base_dir)
     filtered_fns = list(filter(lambda fn: re.fullmatch(regx, fn), fns))
 
-    print("#all file under {} | #files of {}={}".format(len(fns), subset_name,len(filtered_fns)))
+    print("#all file under {} ={} | #files of {}={}".format(base_dir, len(fns), subset_name,len(filtered_fns)))
     os.makedirs(output_dir + "/data_list/", exist_ok=True)
 
     data_list_file_path = os.path.join(output_dir,"data_list",  subset_name + ".csv")
@@ -138,13 +148,15 @@ def write_protocol_list_file(base_dir, subset_name, regx, output_dir='./'):
 
 if __name__ == "__main__":
 
+    # ================================================== CASIA-FASD ======================================
+    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA-FASD', subset_name="CASIA-FASD-ALL",
+                             regx=r"(.+)/CASIA-FASD/(.+)\.png")
+    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA-FASD', subset_name="CASIA-FASD-TRAIN",
+                             regx=r"(.+)/CASIA-FASD/train_release/(.+)\.png")
+    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA-FASD', subset_name="CASIA-FASD-TEST",
+                             regx=r"(.+)/CASIA-FASD/test_release/(.+)\.png")
 
-    # CASIA-FASD
-    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA-FASD', subset_name="CASIA-FASD-ALL", regx=r"(.+)/CASIA-FASD/(.+)\.png")
-    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA-FASD', subset_name="CASIA-FASD-TRAIN", regx=r"(.+)/CASIA-FASD/train_release/(.+)\.png")
-    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA-FASD', subset_name="CASIA-FASD-TEST", regx=r"(.+)/CASIA-FASD/test_release/(.+)\.png")
-
-    # NTU ROSE-YOUTU
+    # ====================================== NTU ROSE-YOUTU ================================================
     write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/ROSE-YOUTU', subset_name="ROSE-TRAIN",
                              regx=r"(.+)/ROSE-YOUTU/(train)/(.+)\.png")
     write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/ROSE-YOUTU', subset_name="ROSE-TEST",
@@ -155,109 +167,174 @@ if __name__ == "__main__":
                              regx=r"(.+)/ROSE-YOUTU/(train|test)/(.+)/[^G](.+)\.png")
 
 
-    # write_protocol_list_file(base_dir, fns, "ROSE-TRAIN", r"/ROSE-YOUTU/(train)/(.+).mp4")
-    # write_protocol_list_file(base_dir, fns, "ROSE-TEST", r"/ROSE-YOUTU/(test)/(.+).mp4")
-    # write_protocol_list_file(base_dir, fns, "ROSE-REAL-ALL", r"/ROSE-YOUTU/(train|test)/(.+)/G(.+).mp4")
-    # write_protocol_list_file(base_dir, fns, "ROSE-FAKE-ALL", r"/ROSE-YOUTU/(train|test)/(.+)/[^G](.+).mp4")
+    # IDIAP REPLAY-ATTACK
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-ALL",
+    #                          regx=r"(.+)/REPLAY-ATTACK/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-TRAIN",
+    #                          regx=r"(.+)/REPLAY-ATTACK/train/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-DEV",
+    #                          regx=r"(.+)/REPLAY-ATTACK/devel/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-TEST",
+    #                          regx=r"(.+)/REPLAY-ATTACK/test/(.+)\.png")
 
-    #write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-ALL", regx=r"(.+)/REPLAY-ATTACK/(.+)png")
-    #write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/ROSE-YOUTU', subset_name="ROSE-ALL", regx=r"(.+)/ROSE-YOUTU/(.+)png")
+    # #  ================================================ OULU-NPU ==============================================
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(\d+)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(\d+)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(\d+)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # # OULU-NPU Protocol-1
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P1-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(\d+)_(1|2)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P1-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(\d+)_(1|2)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P1-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(\d+)_(3)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # # OULU-NPU Protocol-2
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P2-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(\d+)_(\d+)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P2-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(\d+)_(\d+)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P2-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(\d+)_(\d+)_(\d+)_(1|3|5).avi.(.+)\.png")
+    #
+    # # OULU-NPU Protocol-3
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F1-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(2|3|4|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F1-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(2|3|4|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F1-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(1)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F2-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|3|4|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F2-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|3|4|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F2-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(2)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F3-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|4|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F3-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|4|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F3-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(3)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F4-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|3|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F4-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|3|5|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F4-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(4)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F5-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|3|4|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F5-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|3|4|6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F5-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(5)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F6-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|3|4|5)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F6-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|3|4|5)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P3-F6-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(6)_(\d+)_(\d+)_(\d+).avi.(.+)\.png")
+    #
+    # # OULU-NPU Protocol-4
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F1-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(2|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F1-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(2|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F1-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(1)_(3)_(\d+)_(1|3|5).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F2-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F2-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F2-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(2)_(3)_(\d+)_(1|3|5).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F3-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|4|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F3-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|4|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F3-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(3)_(3)_(\d+)_(1|3|5).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F4-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|3|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F4-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|3|5|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F4-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(4)_(3)_(\d+)_(1|3|5).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F5-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|3|4|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F5-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|3|4|6)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F5-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(5)_(3)_(\d+)_(1|3|5).avi.(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F6-TRAIN",
+    #                          regx=r"(.+)/OULU-NPU/(Train_files)/(1|2|3|4|5)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F6-DEV",
+    #                          regx=r"(.+)/OULU-NPU/(Dev_files)/(1|2|3|4|5)_(1|2)_(\d+)_(1|2|4).avi.(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-P4-F6-TEST",
+    #                          regx=r"(.+)/OULU-NPU/(Test_files)/(6)_(3)_(\d+)_(1|3|5).avi.(.+)\.png")
 
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU", r"/OULU-NPU/(.+).avi")
-    # write_protocol_list_file(base_dir, fns, "SiW", r"/SiW/(.+).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-60", r"/SiW-60/(.+).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-M", r"/SiW-M/(.+).mov")
-
-
-    # write_protocol_list_file(base_dir, fns, "Replay-Attack-TRAIN", r"/Replay-Attack((/enroll)?)/(train)/(.+).mov")
-    # write_protocol_list_file(base_dir, fns, "Replay-Attack-DEV", r"/Replay-Attack((/enroll)?)/(devel)/(.+).mov")
-    # write_protocol_list_file(base_dir, fns, "Replay-Attack-TEST", r"/Replay-Attack((/enroll)?)/(test)/(.+).mov")
-
-
-
-    # write_protocol_list_file(base_dir, fns, "SiW-M", r"/SiW-M/(.+).mov")
-    # # phone_session_subject_attack.avi   attack:1 live, 2 printer1, 3 printer2, 4 display 1, 5 display 2
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-TRAIN", r"/OULU-NPU/(Train_files)/(\d+)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-DEV", r"/OULU-NPU/(Dev_files)/(\d+)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-TEST", r"/OULU-NPU/(Test_files)/(\d+)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P1-TRAIN", r"/OULU-NPU/(Train_files)/(\d+)_(1|2)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P1-DEV", r"/OULU-NPU/(Dev_files)/(\d+)_(1|2)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P1-TEST", r"/OULU-NPU/(Test_files)/(\d+)_(3)_(\d+)_(\d+).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P2-TRAIN", r"/OULU-NPU/(Train_files)/(\d+)_(\d+)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P2-DEV", r"/OULU-NPU/(Dev_files)/(\d+)_(\d+)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P2-TEST", r"/OULU-NPU/(Test_files)/(\d+)_(\d+)_(\d+)_(1|3|5).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F1-TRAIN", r"/OULU-NPU/(Train_files)/(2|3|4|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F1-DEV", r"/OULU-NPU/(Dev_files)/(2|3|4|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F1-TEST", r"/OULU-NPU/(Test_files)/(1)_(\d+)_(\d+)_(\d+).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F2-TRAIN", r"/OULU-NPU/(Train_files)/(1|3|4|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F2-DEV", r"/OULU-NPU/(Dev_files)/(1|3|4|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F2-TEST", r"/OULU-NPU/(Test_files)/(2)_(\d+)_(\d+)_(\d+).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F3-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|4|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F3-DEV", r"/OULU-NPU/(Dev_files)/(1|2|4|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F3-TEST", r"/OULU-NPU/(Test_files)/(3)_(\d+)_(\d+)_(\d+).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F4-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|3|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F4-DEV", r"/OULU-NPU/(Dev_files)/(1|2|3|5|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F4-TEST", r"/OULU-NPU/(Test_files)/(4)_(\d+)_(\d+)_(\d+).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F5-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|3|4|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F5-DEV", r"/OULU-NPU/(Dev_files)/(1|2|3|4|6)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F5-TEST", r"/OULU-NPU/(Test_files)/(5)_(\d+)_(\d+)_(\d+).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F6-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|3|4|5)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F6-DEV", r"/OULU-NPU/(Dev_files)/(1|2|3|4|5)_(\d+)_(\d+)_(\d+).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P3-F6-TEST", r"/OULU-NPU/(Test_files)/(6)_(\d+)_(\d+)_(\d+).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F1-TRAIN", r"/OULU-NPU/(Train_files)/(2|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F1-DEV", r"/OULU-NPU/(Dev_files)/(2|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F1-TEST", r"/OULU-NPU/(Test_files)/(1)_(3)_(\d+)_(1|3|5).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F2-TRAIN", r"/OULU-NPU/(Train_files)/(1|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F2-DEV", r"/OULU-NPU/(Dev_files)/(1|3|4|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F2-TEST", r"/OULU-NPU/(Test_files)/(2)_(3)_(\d+)_(1|3|5).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F3-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|4|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F3-DEV", r"/OULU-NPU/(Dev_files)/(1|2|4|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F3-TEST", r"/OULU-NPU/(Test_files)/(3)_(3)_(\d+)_(1|3|5).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F4-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|3|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F4-DEV", r"/OULU-NPU/(Dev_files)/(1|2|3|5|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F4-TEST", r"/OULU-NPU/(Test_files)/(4)_(3)_(\d+)_(1|3|5).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F5-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|3|4|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F5-DEV", r"/OULU-NPU/(Dev_files)/(1|2|3|4|6)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F5-TEST", r"/OULU-NPU/(Test_files)/(5)_(3)_(\d+)_(1|3|5).avi")
-
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F6-TRAIN", r"/OULU-NPU/(Train_files)/(1|2|3|4|5)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F6-DEV", r"/OULU-NPU/(Dev_files)/(1|2|3|4|5)_(1|2)_(\d+)_(1|2|4).avi")
-    # write_protocol_list_file(base_dir, fns, "OULU-NPU-P4-F6-TEST", r"/OULU-NPU/(Test_files)/(6)_(3)_(\d+)_(1|3|5).avi")
 
     # # SubjectID_SensorID_AttackTypeID(1 live 2 paper 3 replay)_MediumID_SessionID
-    # write_protocol_list_file(base_dir, fns, "SiW-P1-TRAIN", r"/SiW-60/(Train)/(.+).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-P1-TEST", r"/SiW/(Test)/(.+).mov")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-TRAIN",
+    #                           regx=r"(.+)/SIW/Train/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-TEST",
+    #                          regx=r"(.+)/SIW/Test/(.+)\.png")
+    # # For SIW protocol 1, only the first 60 frames of each video is extracted for training
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P1-TRAIN",
+    #                          regx=r"(.+)/SIW/Train/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P1-TEST",
+    #                          regx=r"(.+)/SIW/Test/(.+)\.png")
+    #
+    # # SIW Protocol 2
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F1-TRAIN",
+    #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(2|3|4)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F1-TEST",
+    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1)))-\d)((.m)?).mov(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F2-TRAIN",
+    #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|3|4)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F2-TEST",
+    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(2)))-\d)((.m)?).mov(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F3-TRAIN",
+    #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|2|4)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F3-TEST",
+    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(3)))-\d)((.m)?).mov(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F4-TRAIN",
+    #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|2|3)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F4-TEST",
+    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(4)))-\d)((.m)?).mov(.+)\.png")
+    #
+    # # SIW Protocol 3
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F1-TRAIN",
+    #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|2)-\d-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F1-TEST",
+    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|3)-\d-\d)((.m)?).mov(.+)\.png")
+    #
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F2-TRAIN",
+    #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|3)-\d-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F2-TEST",
+    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|2)-\d-\d)((.m)?).mov(.+)\.png")
 
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F1-TRAIN", r"/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(2|3|4)))-\d)((.m)?).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F1-TEST", r"/SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1)))-\d)((.m)?).mov")
 
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F2-TRAIN", r"/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|3|4)))-\d)((.m)?).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F2-TEST", r"/SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(2)))-\d)((.m)?).mov")
 
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F3-TRAIN", r"/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|2|4)))-\d)((.m)?).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F3-TEST", r"/SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(3)))-\d)((.m)?).mov")
-
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F4-TRAIN", r"/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|2|3)))-\d)((.m)?).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-P2-F4-TEST", r"/SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(4)))-\d)((.m)?).mov")
-
-    # write_protocol_list_file(base_dir, fns, "SiW-P3-F1-TRAIN", r"/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|2)-\d-\d)((.m)?).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-P3-F1-TEST", r"/SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|3)-\d-\d)((.m)?).mov")
-
-    # write_protocol_list_file(base_dir, fns, "SiW-P3-F2-TRAIN", r"/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|3)-\d-\d)((.m)?).mov")
-    # write_protocol_list_file(base_dir, fns, "SiW-P3-F2-TEST", r"/SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|2)-\d-\d)((.m)?).mov")
-
+    # TODO: SiW-M is not publicly available (2022-06-22)
+    # #  phone_session_subject_attack.avi   attack:1 live, 2 printer1, 3 printer2, 4 display 1, 5 display 2
     # write_protocol_list_file(base_dir, fns, "SiW-M-F1-TRAIN", r"/SiW-M/(Live/Train|Makeup/Impersonation|Makeup/Obfuscation|Mask/HalfMask|Mask/MannequinHead|Mask/PaperMask|Mask/SiliconeMask|Mask/TransparentMask|Paper|Partial/FunnyeyeGlasses|Partial/PaperCut|Partial/PaperGlasses|Replay)/(.+).mov")
     # write_protocol_list_file(base_dir, fns, "SiW-M-F1-TEST", r"/SiW-M/(Live/Test|Makeup/Cosmetic)/(.+).mov")
 
@@ -310,21 +387,57 @@ if __name__ == "__main__":
     # write_protocol_list_file(base_dir, fns, "SiW-M-F13-TRAIN", r"/SiW-M/(Live/Train|Makeup/Cosmetic|Makeup/Impersonation|Makeup/Obfuscation|Mask/HalfMask|Mask/MannequinHead|Mask/PaperMask|Mask/SiliconeMask|Mask/TransparentMask|Paper|Partial/FunnyeyeGlasses|Partial/PaperCut|Partial/PaperGlasses)/(.+).mov")
     # write_protocol_list_file(base_dir, fns, "SiW-M-F13-TEST", r"/SiW-M/(Live/Test|Replay)/(.+).mov")
 
-    # write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_ALL", r"/(.+)/color/(.+).jpg")
-    # write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_TRAIN", r"/(.+)train(.+)color/(.+).jpg")
-    # write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_VAL", r"/(.+)val(.+)/color/(.+).jpg")
-    # write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_TEST", r"/(.+)test(.+)/color/(.+).jpg")
 
-    # TODO: CeFA
-    # write_protocol_list_file(base_dir, fns, "CeFA_RGB_ALL", r"/(.+)/profile/0001.jpg")
-    # write_protocol_list_file(base_dir, fns, "CeFA_RGB_TRAIN", r"(.+)/\d_(0\d\d|00\d|1\d\d|200)_\d_\d_\d/profile/0001.jpg")
-    # write_protocol_list_file(base_dir, fns, "CeFA_RGB_DEV", r"(.+)/\d_(20[1-9]|2[1-9]\d|300)_\d_\d_\d/profile/0001.jpg")
-    # write_protocol_list_file(base_dir, fns, "CeFA_RGB_TEST", r"(.+)/\d_(3\d[1-9]|[4-5]\d\d)_\d_\d_\d/profile/0001.jpg")
+
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CeFA/', subset_name="CeFA_RGB_ALL",
+    #                          regx=r"/(.+)/profile/0001.jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CeFA/', subset_name="CeFA_RGB_TRAIN",
+    #                          regx=r"(.+)/\d_(0\d\d|00\d|1\d\d|200)_\d_\d_\d/profile/0001.jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CeFA/', subset_name="CeFA_RGB_DEV",
+    #                          regx=r"(.+)/\d_(20[1-9]|2[1-9]\d|300)_\d_\d_\d/profile/0001.jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CeFA/', subset_name="CeFA_RGB_TEST",
+    #                          regx=r"(.+)/\d_(3\d[1-9]|[4-5]\d\d)_\d_\d_\d/profile/0001.jpg")
 
     # CelebA_Spoof
-    #write_protocol_list_file(base_dir, fns, "CelebASpoof_TRAIN", r"/(.+)train/(.+)*.jpg")
-    #write_protocol_list_file(base_dir, fns, "CelebASpoof_TEST", r"/(.+)test/(.+)*.jpg")
+    #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CelabA-Spoof/train', subset_name="CelebA-Spoof-TRAIN",
+    #                         regx=r"/(.+)CelabA-Spoof/train/(.+)*.jpg")
+    #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CelabA-Spoof/test', subset_name="CelebA-Spoof-TEST",
+    #                         regx=r"/(.+)CelabA-Spoof/test/(.+)*.jpg")
 
-    # CASIA-SURF
-    #write_protocol_list_file(base_dir, fns, "CASIA_SURF_TRAIN", r"/(.+)train_part(.+)color/(.+)*.jpg")
-    #write_protocol_list_file(base_dir, fns, "CASIA_SURF_TEST", r"/(.+)test_part(.+)/color/(.+)*.jpg")
+    # CASIA-SURF RGB modality
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name="CASIA-SURF-COLOR_ALL",
+    #                          regx=r"/(.+)/color/(.+).jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name= "CASIA-SURF-COLOR_TRAIN",
+    #                          regx=r"/(.+)train(.+)color/(.+).jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name="CASIA-SURF-COLOR_VAL",
+    #                          regx=r"/(.+)val(.+)/color/(.+).jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name= "CASIA-SURF-COLOR_TEST",
+    #                          regx=r"/(.+)test(.+)/color/(.+).jpg")
+
+    # CASIA-SURF 3DMASK
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-3DMASK/', subset_name="CASIA-SURF-COLOR_ALL",
+    #                          regx=r"/(.+)/color/(.+).jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name= "CASIA-SURF-COLOR_TRAIN",
+    #                          regx=r"/(.+)train(.+)color/(.+).jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name="CASIA-SURF-COLOR_VAL",
+    #                          regx=r"/(.+)val(.+)/color/(.+).jpg")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name= "CASIA-SURF-COLOR_TEST",
+    #                          regx=r"/(.+)test(.+)/color/(.+).jpg")
+
+    # TODO: CSMAD
+    #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CSMAD/',
+    #                         subset_name="CSMAD-ALL",
+    #                          regx=r"(.+)/CSMAD/(.+)\.h5")
+
+    # TODO: 3DMAD
+    #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/3DMAD/',
+    #                         subset_name="3DMAD-ALL",
+   #                          regx=r"(.+)/3DMAD/(.+)\.h5")
+
+    # TODO: WMCA
+
+    # TODO: WFFD
+
+    # TODO PADAISI
+
+

@@ -62,7 +62,7 @@ Some datasets are released with the processed files in the HDF5 format, such as 
 The authors told that the raw data is too large to share and thus they process the data (e.g. cropping faces) and store the data in the HDF5 format for release.
 After downloading the datasets (3DMAD, CSMAD, and WMCA dataset), we can use the methods in [datasets/hdf5_dataset.py](datasets/hdf5_dataset.py) to load the data.
 
-# generate data list
+# Generate data list
 We can use a data list file to indicate what images or frames we want to load for training or testing.
 The data list in the below csv format: 
 ```csv
@@ -75,11 +75,11 @@ Please check [preliminary/generate_data_list.py](preliminary/generate_data_list.
 ```sh
 python preliminary/generate_data_list.py
 ```
-# Get a dataset with a data list
-The file [get_data_list.py](get_data_list.py) implements the functions for getting a dataset from a data list.
+# Get a dataset instance with a data list
+The file [get_dataset.py](get_dataset.py) implements the functions for getting a dataset instance with a data list.
 You can run an example with the below command.
 ```sh
-python get_dataset .py
+python get_dataset.py
 ```
 
 

@@ -23,7 +23,7 @@ import pdb
 
 # ==================================Build detector =========================================================
 
-detector = MtcnnDetector(model_folder='mxnet_mtcnn_face_detection/model', ctx=mx.cpu(0), num_worker=0,
+detector = MtcnnDetector(model_folder='mxnet_mtcnn_face_detection/model', ctx=mx.cpu(0), num_worker=1,
                          accurate_landmark=False)
 
 def detect_face_and_save_landmarks(image_name, image_frame=None):
@@ -137,7 +137,8 @@ if __name__ == "__main__":
         'ROSE-YOUTU': 'ROSE-YOUTU/*/*/*.mp4',  #
         'MSU-MFSD': 'MSU-MFSD/scene01/*/*.mp4',
         'MSU-MFSD2': 'MSU-MFSD/scene01/*/*.mov',
-        'CASIA-SURF-3DMASK': 'CASIA_SURF_3DMask/*/*/*.MOV',
+        'CASIA-SURF-3DMASK_REAL': 'CASIA_SURF_3DMask/Real/*/*.MOV',
+        'CASIA-SURF-3DMASK_FAKE': 'CASIA_SURF_3DMask/Fake/*/*/*.MOV',
         'HKBU_MARs_V2': 'HKBU_MARs_V2/HKBU_MARs_V2/*/*/*.avi'
     }
 
