@@ -1,6 +1,5 @@
-import sys
+
 import os
-import zip_helper
 import re
 
 
@@ -24,69 +23,95 @@ def parse_label_by_filename(fn):
     """
     if re.fullmatch(r"/CASIA-FASD/(train_release|test_release)/(\d+)/(1|2|HR_1)\.avi", fn):
         return 0
-    if re.fullmatch(r"/CASIA-FASD/(train_release|test_release)/(\d+)/(3|4|5|6|HR_2|HR_3)\.avi", fn):
+    elif re.fullmatch(r"/CASIA-FASD/(train_release|test_release)/(\d+)/(3|4|5|6|HR_2|HR_3)\.avi", fn):
         return 1
-    if re.fullmatch(r"/CASIA-FASD/(train_release|test_release)/(\d+)/(7|8|HR_4)\.avi", fn):
+    elif re.fullmatch(r"/CASIA-FASD/(train_release|test_release)/(\d+)/(7|8|HR_4)\.avi", fn):
         return 2
 
     if re.fullmatch(r"/Replay-Attack/enroll/(train|test|devel)/client(\d+)_(.+)\.mov", fn):
         return 0
-    if re.fullmatch(r"/Replay-Attack/(train|test|devel)/real/client(\d+)_(.+)\.mov", fn):
+    elif re.fullmatch(r"/Replay-Attack/(train|test|devel)/real/client(\d+)_(.+)\.mov", fn):
         return 0
-    if re.fullmatch(r"/Replay-Attack/(train|test|devel)/attack/(fixed|hand)/attack_print_(.+)\.mov", fn):
+    elif re.fullmatch(r"/Replay-Attack/(train|test|devel)/attack/(fixed|hand)/attack_print_(.+)\.mov", fn):
         return 1
-    if re.fullmatch(r"/Replay-Attack/(train|test|devel)/attack/(fixed|hand)/attack_(mobile|highdef)_(.+)\.mov", fn):
+    elif re.fullmatch(r"/Replay-Attack/(train|test|devel)/attack/(fixed|hand)/attack_(mobile|highdef)_(.+)\.mov", fn):
         return 2
 
     if re.fullmatch(r"/OULU-NPU/(Train_files|Test_files|Dev_files)/(\d+)_(\d+)_(\d+)_1\.avi", fn):
         return 0
-    if re.fullmatch(r"/OULU-NPU/(Train_files|Test_files|Dev_files)/(\d+)_(\d+)_(\d+)_(2|3)\.avi", fn):
+    elif re.fullmatch(r"/OULU-NPU/(Train_files|Test_files|Dev_files)/(\d+)_(\d+)_(\d+)_(2|3)\.avi", fn):
         return 1
-    if re.fullmatch(r"/OULU-NPU/(Train_files|Test_files|Dev_files)/(\d+)_(\d+)_(\d+)_(4|5)\.avi", fn):
+    elif re.fullmatch(r"/OULU-NPU/(Train_files|Test_files|Dev_files)/(\d+)_(\d+)_(\d+)_(4|5)\.avi", fn):
         return 2
 
     if re.fullmatch(r"/ROSE-YOUTU/(train|test)/(_?)(\d+)/G_(.+)\.mp4", fn):
         return 0
-    if re.fullmatch(r"/ROSE-YOUTU/(train|test)/(_?)(\d+)/(Mc_|Mf_|Mu_|Pq_|Ps_)(.+)\.mp4", fn):
+    elif re.fullmatch(r"/ROSE-YOUTU/(train|test)/(_?)(\d+)/(Mc_|Mf_|Mu_|Pq_|Ps_)(.+)\.mp4", fn):
         return 1
-    if re.fullmatch(r"/ROSE-YOUTU/(train|test)/(_?)(\d+)/(Vl_|Vm_)(.+)\.mp4", fn):
+    elif re.fullmatch(r"/ROSE-YOUTU/(train|test)/(_?)(\d+)/(Vl_|Vm_)(.+)\.mp4", fn):
         return 2
 
     if re.fullmatch(r"/SiW/(Train|Test)/live/(\d+)/(\d+)-(\d+)-(1)-(\d+)-(\d+)(\.m)?\.mov", fn):
         return 0
-    if re.fullmatch(r"/SiW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(2)-(\d+)-(\d+)\.mov", fn):
+    elif re.fullmatch(r"/SiW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(2)-(\d+)-(\d+)\.mov", fn):
         return 1
-    if re.fullmatch(r"/SiW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(3)-(\d+)-(\d+)\.mov", fn):
+    elif re.fullmatch(r"/SiW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(3)-(\d+)-(\d+)\.mov", fn):
         return 2
 
     if re.fullmatch(r"/SiW-60/(Train)/live/(\d+)/(\d+)-(\d+)-(1)-(\d+)-(\d+)\.mov", fn):
         return 0
-    if re.fullmatch(r"/SiW-60/(Train)/spoof/(\d+)/(\d+)-(\d+)-(2)-(\d+)-(\d+)\.mov", fn):
+    elif re.fullmatch(r"/SiW-60/(Train)/spoof/(\d+)/(\d+)-(\d+)-(2)-(\d+)-(\d+)\.mov", fn):
         return 1
-    if re.fullmatch(r"/SiW-60/(Train)/spoof/(\d+)/(\d+)-(\d+)-(3)-(\d+)-(\d+)\.mov", fn):
+    elif re.fullmatch(r"/SiW-60/(Train)/spoof/(\d+)/(\d+)-(\d+)-(3)-(\d+)-(\d+)\.mov", fn):
         return 2
 
     if re.fullmatch(r"/SiW-M/(Live/Train|Live/Test)/(.+)\.mov", fn):
         return 0
-    if re.fullmatch(r"/SiW-M/(Paper|Partial/FunnyeyeGlasses|Partial/PaperCut|Partial/PaperGlasses)/(.+)\.mov", fn):
+    elif re.fullmatch(r"/SiW-M/(Paper|Partial/FunnyeyeGlasses|Partial/PaperCut|Partial/PaperGlasses)/(.+)\.mov", fn):
         return 1
-    if re.fullmatch(r"/SiW-M/(Replay)/(.+)\.mov", fn):
+    elif re.fullmatch(r"/SiW-M/(Replay)/(.+)\.mov", fn):
         return 2
-    if re.fullmatch(r"/SiW-M/(Makeup/Cosmetic|Makeup/Impersonation|Makeup/Obfuscation|Mask/HalfMask|Mask/MannequinHead|Mask/PaperMask|Mask/SiliconeMask|Mask/TransparentMask)/(.+)\.mov", fn):
+    elif re.fullmatch(r"/SiW-M/(Makeup/Cosmetic|Makeup/Impersonation|Makeup/Obfuscation|Mask/HalfMask|Mask/MannequinHead|Mask/PaperMask|Mask/SiliconeMask|Mask/TransparentMask)/(.+)\.mov", fn):
         return 3
 
 
 
-    if 'CASIA-SURF' in fn:
+    if 'CASIA-SURF-CVPR2019' in fn and 'real_part' in fn:
         return 0
-    if 'CASIA-SURF' in fn:
-        return 0
+    elif 'CASIA-SURF-CVPR2019' in fn and 'fake_part'in fn:
+        return 1
 
 
     if 'HKBU_MARs_V2' in fn and 'real' in fn:
         return 0
-    if 'HKBU_MARs_V2' in fn and 'attack' in fn:
+    elif 'HKBU_MARs_V2' in fn and 'attack' in fn:
         return 3
+
+    if 'CelebA-Spoof' in fn and 'live' in fn:
+        return 0
+    elif 'CelebA-Spoof' in fn and 'spoof' in fn:
+        return 1
+
+
+
+    if bool(re.search('(.+)CeFA(.+)\d_\d\d\d_\d_\d_1/(.+)', fn)):
+        return 0
+    elif bool(re.search('(.+)CeFA(.+)\d_\d\d\d_\d_\d_3/(.+)', fn)):
+        # Photo
+        return 1
+    elif bool(re.search('(.+)CeFA(.+)\d_\d\d\d_\d_\d_4/(.+)', fn)):
+        # Screen
+        return 2
+    elif bool(re.search('(.+)CeFA(.+)\d_\d\d\d_\d_\d_2/(.+)', fn)):
+        # Cloth
+        return 3
+
+    if 'CelabA-Spoof' in fn and 'live' in fn:
+        return 0
+    elif 'CelabA-Spoof' in fn and 'spoof' in fn:
+        return 1
+
+
 
 #def get_info_from_file(fn):
 #    info = zip_helper.read_bytes_from_zip_file(fn, "info.txt")
@@ -111,50 +136,34 @@ def get_fns(root):
     return fns
 
 
-def write_protocol_list_file(base_dir, fns, subset_name, regx):
-    regx += r",(\d+),(\d+),(\d+)"
+def write_protocol_list_file(base_dir, fns, subset_name, regx, output_dir='./'):
+    # regx += r",(\d+),(\d+)"
     filtered_fns = list(filter(lambda fn: re.fullmatch(regx, fn), fns))
+    # import pdb; pdb.set_trace()
     print(subset_name, "\t", len(filtered_fns))
 
-    os.makedirs(base_dir + "/data_list/", exist_ok=True)
-    with open(base_dir + "/data_list/" + subset_name + ".csv", "w") as f:
-        for fn in filtered_fns:
-            f.write(fn + "\n")
+    os.makedirs(output_dir + "/data_list/", exist_ok=True)
 
-def write_protocol_list_file_txt(base_dir, fns, subset_name, regx):
-    regx += r",(\d+),(\d+)"
-    filtered_fns = list(filter(lambda fn: re.fullmatch(regx, fn), fns))
-    print(subset_name, "\t", len(filtered_fns))
-
-    os.makedirs(base_dir + "/data_list/", exist_ok=True)
-    with open(base_dir + "/data_list/" + subset_name + ".csv", "w") as f:
+    with open(output_dir + "/data_list/" + subset_name + ".csv", "w") as f:
         for fn in filtered_fns:
-            f.write(fn + "\n")
-            
-    
-    
+            label = parse_label_by_filename(fn)
+            relpath = os.path.relpath(fn, base_dir)
+            f.write(relpath + ',' + str(label) + "\n")
+
+
 
 
 def main():
     # get the base_dir
     # assert len(sys.argv) == 2
     # base_dir = sys.argv[1]
-    base_dir = '/home/Dataset/data/Face_Spoofing/'
+    base_dir = '/home/Dataset/Face_Spoofing/'
+    output_dir = './'
     assert os.path.exists(base_dir)
     print("base_dir", base_dir)
 
     fns = get_fns(base_dir)
     print(len(fns))
-
-    summary = {}
-    for i in range(len(fns)):
-        fn = fns[i]
-        ds = dataset_by_fn(fn)
-        pa = parse_label_by_filename(fn)
-
-        assert not "," in fn
-
-
     
     # write protocol files
     # write_protocol_list_file(base_dir, fns, "ALL", r"(.+)")
@@ -180,7 +189,7 @@ def main():
     #write_protocol_list_file(base_dir, fns, "ROSE-REAL-ALL", r"/ROSE-YOUTU/(train|test)/(.+)/G(.+).mp4")
     #write_protocol_list_file(base_dir, fns, "ROSE-FAKE-ALL", r"/ROSE-YOUTU/(train|test)/(.+)/[^G](.+).mp4")
 
-    write_protocol_list_file(base_dir, fns, "SiW-M", r"/SiW-M/(.+).mov")
+    # write_protocol_list_file(base_dir, fns, "SiW-M", r"/SiW-M/(.+).mov")
     # # phone_session_subject_attack.avi   attack:1 live, 2 printer1, 3 printer2, 4 display 1, 5 display 2
     # write_protocol_list_file(base_dir, fns, "OULU-NPU-TRAIN", r"/OULU-NPU/(Train_files)/(\d+)_(\d+)_(\d+)_(\d+).avi")
     # write_protocol_list_file(base_dir, fns, "OULU-NPU-DEV", r"/OULU-NPU/(Dev_files)/(\d+)_(\d+)_(\d+)_(\d+).avi")
@@ -314,6 +323,31 @@ def main():
 
     # write_protocol_list_file(base_dir, fns, "SiW-M-F13-TRAIN", r"/SiW-M/(Live/Train|Makeup/Cosmetic|Makeup/Impersonation|Makeup/Obfuscation|Mask/HalfMask|Mask/MannequinHead|Mask/PaperMask|Mask/SiliconeMask|Mask/TransparentMask|Paper|Partial/FunnyeyeGlasses|Partial/PaperCut|Partial/PaperGlasses)/(.+).mov")
     # write_protocol_list_file(base_dir, fns, "SiW-M-F13-TEST", r"/SiW-M/(Live/Test|Replay)/(.+).mov")
+
+    #write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_ALL", r"/(.+)/color/(.+).jpg")
+    #write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_TRAIN", r"/(.+)train(.+)color/(.+).jpg")
+    #write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_VAL", r"/(.+)val(.+)/color/(.+).jpg")
+    #write_protocol_list_file(base_dir, fns, "CASIA_SURF_COLOR_TEST", r"/(.+)test(.+)/color/(.+).jpg")
+
+
+    # TODO: CeFA
+    #write_protocol_list_file(base_dir, fns, "CeFA_RGB_ALL", r"/(.+)/profile/0001.jpg")
+    #write_protocol_list_file(base_dir, fns, "CeFA_RGB_TRAIN", r"(.+)/\d_(0\d\d|00\d|1\d\d|200)_\d_\d_\d/profile/0001.jpg")
+    #write_protocol_list_file(base_dir, fns, "CeFA_RGB_DEV", r"(.+)/\d_(20[1-9]|2[1-9]\d|300)_\d_\d_\d/profile/0001.jpg")
+    #write_protocol_list_file(base_dir, fns, "CeFA_RGB_TEST", r"(.+)/\d_(3\d[1-9]|[4-5]\d\d)_\d_\d_\d/profile/0001.jpg")
+
+
+    # CelebA_Spoof
+    write_protocol_list_file(base_dir, fns, "CelebASpoof_TRAIN", r"/(.+)train/(.+)*.jpg")
+    write_protocol_list_file(base_dir, fns, "CelebASpoof_TEST", r"/(.+)test/(.+)*.jpg")
+
+    # CASIA-SURF
+    write_protocol_list_file(base_dir, fns, "CASIA_SURF_TRAIN", r"/(.+)train_part(.+)color/(.+)*.jpg")
+    write_protocol_list_file(base_dir, fns, "CASIA_SURF_TEST", r"/(.+)test_part(.+)/color/(.+)*.jpg")
+
+
+    # TODO: HiFi Mask
+
 
 
 

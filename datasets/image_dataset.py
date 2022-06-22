@@ -2,6 +2,18 @@ import os
 import cv2
 import torch
 from torchvision import transforms
+
+def crop_face_with_mtcnn_bbox_info(image, mtcnn_bbox_file_path):
+    # You can define your own processing function
+    with open(mtcnn_bbox_file_path, 'r') as f:
+        bbox_info = f.read()
+        bboxes, landmark_points = bbox_info.split()
+        bboxes = bboxes.split(',')
+        landmark_points = landmark_points.split(',')
+        x1, y1, x2, y2 = int(bboxes[0]), int(bboxes[1]), int(bboxes[2]), int(bboxes[3])
+    face = image[y1:y2, x1:x2]
+    return face
+
 class WFDD:
     def __init__(self, image_folder_dir, face_label, transform, num_frames=1000):
 
@@ -47,14 +59,7 @@ class ImageDataset:
         else:
             # Crop face
             bbox_file_path = image_path.replace('.png', self.bbox_suffix)
-            with open(bbox_file_path, 'r') as f:
-                bbox_info = f.read()
-                import pdb; pdb.set_trace()
-                bboxes, landmark_points = bbox_info.split()
-                bboxes = bboxes.split(',')
-                landmark_points = landmark_points.split(',')
-                x1, y1, x2, y2 = int(bboxes[0]), int(bboxes[1]), int(bboxes[2]), int(bboxes[3])
-            crop_face = im[y1:y2, x1:x2]
+            crop_face = crop_face_with_mtcnn_bbox_info(im, bbox_file_path)
             # cv2.imwrite('test.png', crop_face)
             return crop_face
 
