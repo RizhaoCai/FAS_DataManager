@@ -1,7 +1,8 @@
-# coding: utf-8
-# import torch.multiprocessing as mp
-# mp.set_start_method('spawn')
-
+"""
+ This is used when video frames are extracted and packed in a zip, which can help the reduce the management burden due to a large
+ number of the small files. But this also leads to more inconvenience in the programming. As for research purposes, it is
+ more convenient to extract frames and save the frames as images under folders.
+"""
 import cv2
 import numpy as np
 import torch

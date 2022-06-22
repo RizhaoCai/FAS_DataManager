@@ -10,12 +10,13 @@ This repo can be used to manage publicly available datasets for the face anti-sp
 ```sh
 # requirements
 pip install -r requirements.txt
+
 # opencv 
 conda install -c conda-forge opencv
+
 # pytorch/torchvision 
 conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch
-# 
-# mtcnn
+
 # mxnet + mtcnn (https://github.com/YYuanAnyVision/mxnet_mtcnn_face_detection.git)
 git clone https://github.com/YYuanAnyVision/mxnet_mtcnn_face_detection.git
 pip install mxnet # cpu version is fine
