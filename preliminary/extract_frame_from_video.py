@@ -144,9 +144,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("Args parser for training")
     parser.add_argument("--num_workers", type=int, default=1, help="number of threads in the pools")
     parser.add_argument("--max_size", type=int, default=512, help="The maximum size")
-    parser.add_argument("--dataset", type=str, default='CASIA-FASD', help="The maximum size")
+    parser.add_argument("--dataset", type=str, default='CASIA-FASD', help="Dataset name keys")
     parser.add_argument("--enable_mtcnn", action='store_true', help="The maximum size")
-    parser.add_argument("--max_frames", type=int, default=10, help="The maximum size")
+    parser.add_argument("--max_frames", type=int, default=10, help="The maximum frame to extract")
     parser.add_argument("--root_dir", default='/home/Dataset/Face_Spoofing/')
     parser.add_argument("--save_dir", default='/home/rizhao/data/FAS/frames/')
 

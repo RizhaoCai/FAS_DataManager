@@ -5,8 +5,8 @@ import torch
 
 # ImageDataset does not support WFDD yet
 ImageDataset_List = [
-    'CASIA_FASD', 'REPLAY_ATTACK', 'ROSE_YOUTU', 'OULU_NPU', 'MSU_MFSD', 'SIW', 'CASIA_SURF_3DMASK' 
-    'CASIA_SURF', 'CASIA_HIFI_MASK', 'CeFA', 'CelabA-Spoof'
+    'CASIA-FASD', 'REPLAY-ATTACK', 'ROSE-YOUTU', 'OULU-NPU', 'MSU-MFSD', 'SIW', 'CASIA-SURF-3DMASK' 
+    'CASIA-SURF', 'CASIA-HIFI-MASK', 'CeFA', 'CelabA-Spoof'
 ]
 
 HDF5_dataset = ['ThreeDMAD', 'WMCA', 'CSMAD']
