@@ -71,9 +71,21 @@ examples/1.png,0
 The first column indicates the path of the image/frame, and the second column indicate image's label. 
 The label format is that '0' means a genuine face/real face, '1' means a printed paper/photo attack, '2' means a replay/screen attack, and '3' means a mask attack.
 For a binary classification network, the labels can be transformed as binary: 0 for real and 1 for fake. 
+
 Please check [preliminary/generate_data_list.py](preliminary/generate_data_list.py) to see how to generate data list files for different datasets.
+For example, to generate a data list for the NTU ROSE-YOUTU dataset, you may refer to the below code snippet
+
+```python
+from preliminary.generate_data_list import write_protocol_list_file
+write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/ROSE-YOUTU', subset_name="ROSE-TRAIN",
+                          regx=r"(.+)/ROSE-YOUTU/(train)/(.+)\.png")
+write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/ROSE-YOUTU', subset_name="ROSE-TEST",
+                          regx=r"(.+)/ROSE-YOUTU/(test)/(.+)\.png")
+```
+Also, you can also use the below shell script to do the batch processing 
 ```sh
-python preliminary/generate_data_list.py
+python -c "from preliminary.generate_data_list import write_protocol_list_file;\
+write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/ROSE-YOUTU', subset_name='ROSE-TRAIN', regx=r'(.+)/ROSE-YOUTU/(train)/(.+)\.png')"
 ```
 # Get a dataset instance with a data list
 The file [get_dataset.py](get_dataset.py) implements the functions for getting a dataset instance with a data list.
