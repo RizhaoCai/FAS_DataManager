@@ -65,10 +65,15 @@ class ImageDataset:
 
     def __getitem__(self, index):
         path = self.image_list[index]
-        target = int(self.label_list[index])
+        spoofing_label = int(self.label_list[index])
         img = self.load_image(path) # cv2 image: numpy, (H,W,C), uint8[0,255],
         img_tensor = self.transform(img) # tensor: (C,H,W), float [0-1]
         img_tensor = img_tensor.to(torch.float32)
+
+
+        target = {
+            'spoofing_label': spoofing_label
+        }
         return index, img_tensor, target, path
 
 
