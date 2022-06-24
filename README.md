@@ -94,4 +94,9 @@ You can run an example with the below command.
 python get_dataset.py
 ```
 
+# Acknowledgement
+I would like thank [Dr. Sun Wenyun](https://scholar.google.com/citations?user=U3GWBDwAAAAJ&hl=en) for his suggestions about how to manage the data. Most of the regular expressions for parsing labels and protocols in [preliminary/generate_data_list.py](preliminary/generate_data_list.py) is written by Dr. Sun.
+I also want to thank [Dr. Chen Changsheng](https://scholar.google.com/citations?user=vXQ3lLoAAAAJ&hl=en), [Dr. Li Haoliang](https://scholar.google.com/citations?user=1xioat8AAAAJ&hl=zh-CN), [Dr. Yu Zitong](https://scholar.google.com/citations?user=ziHejLwAAAAJ&hl=en) and Mr. Li Zhi for their help to my research for the face anti-spoofing problem.
+
+
 
