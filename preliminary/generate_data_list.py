@@ -43,11 +43,11 @@ def parse_label_by_filename(fn):
     elif bool(re.search(r"/ROSE-YOUTU/(train|test)/(_?)(\d+)/(Vl_|Vm_)(.+)\.mp4", fn)):
         return 2
 
-    if bool(re.search(r"/SiW/(Train|Test)/live/(\d+)/(\d+)-(\d+)-(1)-(\d+)-(\d+)(\.m)?\.mov", fn)):
+    if bool(re.search(r"/SIW/(Train|Test)/live/(\d+)/(\d+)-(\d+)-(1)-(\d+)-(\d+)(\.m)?\.mov", fn)):
         return 0
-    elif bool(re.search(r"/SiW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(2)-(\d+)-(\d+)\.mov", fn)):
+    elif bool(re.search(r"/SIW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(2)-(\d+)-(\d+)\.mov", fn)):
         return 1
-    elif bool(re.search(r"/SiW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(3)-(\d+)-(\d+)\.mov", fn)):
+    elif bool(re.search(r"/SIW/(Train|Test)/spoof/(\d+)/(\d+)-(\d+)-(3)-(\d+)-(\d+)\.mov", fn)):
         return 2
 
     if bool(re.search(r"/SiW-60/(Train)/live/(\d+)/(\d+)-(\d+)-(1)-(\d+)-(\d+)\.mov", fn)):
@@ -302,36 +302,36 @@ if __name__ == "__main__":
     #                          regx=r"(.+)/SIW/Test/(.+)\.png")
     #
     # # SIW Protocol 2
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F1-TRAIN",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F1-TRAIN",
     #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(2|3|4)))-\d)((.m)?).mov(.+)\.png")
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F1-TEST",
-    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F1-TEST",
+    #                          regx=r"(.+)SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1)))-\d)((.m)?).mov(.+)\.png")
     #
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F2-TRAIN",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F2-TRAIN",
     #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|3|4)))-\d)((.m)?).mov(.+)\.png")
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F2-TEST",
-    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(2)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F2-TEST",
+    #                          regx=r"(.+)SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(2)))-\d)((.m)?).mov(.+)\.png")
     #
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F3-TRAIN",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F3-TRAIN",
     #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|2|4)))-\d)((.m)?).mov(.+)\.png")
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F3-TEST",
-    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(3)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F3-TEST",
+    #                          regx=r"(.+)SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(3)))-\d)((.m)?).mov(.+)\.png")
     #
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F4-TRAIN",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F4-TRAIN",
     #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(1|2|3)))-\d)((.m)?).mov(.+)\.png")
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P2-F4-TEST",
-    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(4)))-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P2-F4-TEST",
+    #                          regx=r"(.+)SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-((1-\d)|(3-(4)))-\d)((.m)?).mov(.+)\.png")
     #
     # # SIW Protocol 3
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F1-TRAIN",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P3-F1-TRAIN",
     #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|2)-\d-\d)((.m)?).mov(.+)\.png")
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F1-TEST",
-    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|3)-\d-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P3-F1-TEST",
+    #                          regx=r"(.+)SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|3)-\d-\d)((.m)?).mov(.+)\.png")
     #
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F2-TRAIN",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P3-F2-TRAIN",
     #                          regx=r"(.+)/SIW/(Train)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|3)-\d-\d)((.m)?).mov(.+)\.png")
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P3-F2-TEST",
-    #                          regx=r"SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|2)-\d-\d)((.m)?).mov(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P3-F2-TEST",
+    #                          regx=r"(.+)SIW/(Test)/(live|spoof)/(\d\d\d)/(\d\d\d-\d-(1|2)-\d-\d)((.m)?).mov(.+)\.png")
 
 
 
