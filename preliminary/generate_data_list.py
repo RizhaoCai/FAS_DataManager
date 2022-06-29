@@ -113,7 +113,7 @@ def parse_label_by_filename(fn):
     elif 'CASIA_SURF_3DMask' in fn and 'Fake/3' in fn:
         return 3
 
-    if 'CASIA_HiFi-Mask' in fn:
+    if 'CASIA-HiFi-Mask' in fn:
         return CASIA_HiFiMask.parse_label_by_name(fn)
 
 
@@ -296,9 +296,9 @@ if __name__ == "__main__":
     # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-TEST",
     #                          regx=r"(.+)/SIW/Test/(.+)\.png")
     # # For SIW protocol 1, only the first 60 frames of each video is extracted for training
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P1-TRAIN",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P1-TRAIN",
     #                          regx=r"(.+)/SIW/Train/(.+)\.png")
-    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SiW-P1-TEST",
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/SIW', subset_name="SIW-P1-TEST",
     #                          regx=r"(.+)/SIW/Test/(.+)\.png")
     #
     # # SIW Protocol 2
@@ -427,12 +427,12 @@ if __name__ == "__main__":
     #                          regx=r"/(.+)test(.+)/color/(.+).jpg")
 
     # CASIA HiFi Mask
-    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TRAIN",
-    #                           regx=r"/(.+)/'(\d+)_([0-3]\d|4[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+).png")
-    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-DEV",
-    #                          regx=r"/(.+)/'(\d+)_(4[6-9]|5[0-1])_(\d+)_(\d+)_(\d+)_(\d+)/(.+).png")
-    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TEST",
-    #                          regx=r"/(.+)/'(\d+)_(5[2-9]|6[0-9]|7[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+).png")
+    write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TRAIN",
+                               regx=r"(.+)/(\d+)_([0-3]\d|4[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
+    write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-DEV",
+                            regx=r"(.+)/(\d+)_(4[6-9]|5[0-1])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
+    write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TEST",
+                              regx=r"(.+)/(\d+)_(5[2-9]|6[0-9]|7[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
 
     # TODO: CSMAD
     #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CSMAD/',

@@ -20,11 +20,14 @@ class CASIA_HiFiMask:
             Light: No(0), NormalLight(1), DimLight(2), BrightLight(3), BacklitLight(4),  SideSight(5), TopLight(6)
             Sensor: SpO2(0), Iphone11(1), IphoneX(2), MI10(3), P40(4), S20(5), Vivo(6), D435(7), HJIM(8)
         """
-        unit_name = re.search(path, '(\d+)_(\d+)_(\d+)_(\d+)_(\d+)_(\d+)')[0]
-        subject_id, type_id, scene_id, light_id, sensor_id = unit_name.split('_')
+
+        unit_name = re.search('(\d+)_(\d+)_(\d+)_(\d+)_(\d+)_(\d+)', path)[0]
+
+        complexion_id, subject_id, type_id, scene_id, light_id, sensor_id = unit_name.split('_')
 
         if int(type_id) == 0:
-            label = 0
+
+            return 0
         else:
             # Different masks are labled as 3
             return 3
