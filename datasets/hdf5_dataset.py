@@ -1,53 +1,21 @@
-import torch
-import numpy as np
-import cv2
-import os
-from torchvision import transforms
 import h5py
-
-
-class WMCA(torch.utils.data.Dataset):
-    """
-        Also work for CASIA-SURF
-    """
-
-    def __init__(self, folder_path, face_label, torchvision_transform=None, num_frames=1000):
-        self.folder_path = folder_path
-        self.face_label = face_label
-
-        self.image_list = os.listdir(self.folder_path)
-        if len(self.image_list) > num_frames:
-            sample_indices = np.linspace(0, len(self.image_list) - 1, num=num_frames, dtype=int)
-            self.image_list = [self.image_list[id] for id in sample_indices]
-
-        self.image_list = [os.path.join(folder_path, x) for x in self.image_list]
-        self.len = len(self.image_list)
-
-        if torchvision_transform is None:
-            self.transform = transforms.ToTensor()
-        else:
-            self.transform = torchvision_transform
-
-    def __getitem__(self, index):
-        im = cv2.imread(self.image_list[index])
-        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-        # im = im.transpose((2,0,1))
-        tensor = self.transform(im)
-        tensor = tensor.to(torch.float)
-        target = {
-            'face_label': self.face_label
-        }
-        return index, tensor, target, self.zip_file_path
-
-    def __len__(self):
-        return self.len
+import numpy as np
+import torch
+from torchvision import transforms
 
 
 class ThreeDMAD(torch.utils.data.Dataset):
     """
-        3DMAD dataset
+        3DMAD dataset: https://gitlab.idiap.ch/bob/bob.db.maskattack/-/tree/master/doc
     """
-    def __init__(self, h5_path, face_label, torchvision_transform=None, num_frames=1000):
+    def parse_label_by_name(hdf5_name):
+        if 'attack' in hdf5_name.lower():
+            return 3
+        elif 'bonafide' in hdf5_name.lower():
+            return 0
+
+
+    def __init__(self, h5_path, face_label=0, torchvision_transform=None, num_frames=1000):
         self.h5_path = h5_path
         self.face_label = face_label
 
@@ -68,13 +36,14 @@ class ThreeDMAD(torch.utils.data.Dataset):
 
         self.len = len(self.index_list)
 
+    def get_image(self, index):
+        color_data = self.h5_dataset['Color_Data'][index]  # (3,480,640), unit, RGB
+        return color_data.transpose((1, 2, 0))  # (480,640,3)
+
     def __getitem__(self, index):
-        index = self.index_list[index]
+        idx = self.index_list[index]
 
-        color_data = self.h5_dataset['Color_Data'][index]  # (3,480,640), uint8
-        # depth_data = self.h5_dataset['Depth_Data'][index] # (1,480,640), uint8
-
-        im = color_data.transpose((2, 0, 1))  # (480,640,3)
+        im = self.get_image(idx)
         img_tensor = self.transform(im)
         img_tensor = img_tensor.to(torch.float)
         target = self.face_label
@@ -85,6 +54,13 @@ class ThreeDMAD(torch.utils.data.Dataset):
 
 
 class CSMAD(torch.utils.data.Dataset):
+
+    def parse_label_by_name(hdf5_name):
+        if 'attack' in hdf5_name.lower():
+            return 3
+        elif 'bonafide' in hdf5_name.lower():
+            return 0
+
     def __init__(self, h5_path, face_label, torchvision_transform=None, num_frames=1000):
         self.h5_path = h5_path
         self.face_label = face_label
@@ -103,15 +79,19 @@ class CSMAD(torch.utils.data.Dataset):
 
         self.len = len(self.key_list)
 
-    def __getitem__(self, index):
+    def get_image(self, index):
         key = self.key_list[index]
+        color_data = self.h5_dataset['data']['sr300']['color'][key][:]  # (640,830, 3) unit8
+        return color_data
+    def __getitem__(self, index):
+
 
         # ir_data = self.h5_dataseta['data']['seek_compact']['infrared']['09_35_58_990']
         # depth_data = self.h5_dataset['Depth_Data'][index] # (1,480,640), uint8
         # ir_data = self.h5_dataset['data']['sr300']['infrared'][key][:] # (640,830) uint16
         # depth_data = self.h5_dataset['data']['sr300']['depth'][key][:] # (640,830) uint16
-        color_data = self.h5_dataset['data']['sr300']['color'][key][:]  # (640,830, 3) unit8
-        im = color_data
+
+        im = self.get_image(index)
 
         img_tensor = self.transform(im).to(torch.float)
         target = self.face_label
@@ -121,19 +101,46 @@ class CSMAD(torch.utils.data.Dataset):
         return self.len
 
 
-class WMCA_H5(torch.utils.data.Dataset):
-    def __init__(self, h5_path, face_label, torchvision_transform, num_frames=1000):
+class WMCA(torch.utils.data.Dataset):
+    def parse_label_by_name(
+            hdf5_name,
+            bonafide_list_csv='/home/Dataset/Face_Spoofing/WMCA/WMCA_preprocessed_RGB/WMCA/documentation/bonafide_illustration_files.csv',
+            attack_list_csv='/home/Dataset/Face_Spoofing/WMCA/WMCA_preprocessed_RGB/WMCA/documentation/attack_illustration_files.csv'
+    ):
+
+        with open(bonafide_list_csv) as f:
+            bonafide_list = f.read()
+
+        with open(attack_list_csv) as f:
+            attack_list = f.read()
+
+        if hdf5_name in bonafide_list:
+            return 0
+
+        elif hdf5_name in attack_list:
+            return 3
+
+
+    def __init__(self, h5_path, face_label, torchvision_transform=None, num_frames=1000):
         self.h5_path = h5_path
         self.face_label = face_label
-
-        # Keys: ['Color_Data', 'Depth_Data', 'Eye_Pos']>
         self.h5_dataset = h5py.File(self.h5_path, 'r')
-        self.len = len(self.h5_dataset.keys())
+        self.key_list = [x for x in self.h5_dataset.keys()]
+
+        # import pdb; pdb.set_trace()
+        self.len = len(self.key_list)
 
         if torchvision_transform is None:
             self.transform = transforms.ToTensor()
         else:
             self.transform = torchvision_transform
+
+    def get_image(self, index):
+        key = self.key_list[index]
+        color_data = self.h5_dataset[key]['array'][:]  # (3, 128,128) unit8
+        # import pdb; pdb.set_trace()
+        color_data = np.transpose(color_data, (1,2,0))
+        return color_data
 
     def __getitem__(self, index):
         # key = self.key_list[index]
@@ -142,9 +149,8 @@ class WMCA_H5(torch.utils.data.Dataset):
         # depth_data = self.h5_dataset['Depth_Data'][index] # (1,480,640), uint8
         # ir_data = self.h5_dataset['data']['sr300']['infrared'][key][:] # (640,830) uint16
         # depth_data = self.h5_dataset['data']['sr300']['depth'][key][:] # (640,830) uint16
-        key = 'Frame_{}'.format(index)
-        color_data = self.h5_dataset[key]['array'][:]  # (640,830, 3) unit8
-        im = color_data
+
+        im = self.get_image(index)
         img_tensor = self.transform(im)
         target =  self.face_label
 
@@ -158,7 +164,7 @@ if __name__ == '__main__':
     # dataset = WMCA('/home/rizhao/data/FAS/wmca/ir/test/fake_head/505_01_000_2_06/', 0, None)
     dataset_3dmad = ThreeDMAD('/home/Dataset/Face_Spoofing/3DMAD/session01/Data/04_01_05.hdf5', 0, None)
     dataset_csmad = CSMAD('/home/Dataset/Face_Spoofing/CSMAD/attack/STAND/A/Mask_atk_A1_i0_001.h5', 0, None)
-    dataset_wmca = WMCA_H5(
+    dataset_wmca = WMCA(
         '/home/Dataset/Face_Spoofing/WMCA/WMCA_preprocessed_RGB/WMCA/face-station/31.01.18/514_01_035_1_05.hdf5',
         0, None)
     out1 = dataset_3dmad.__getitem__(0)

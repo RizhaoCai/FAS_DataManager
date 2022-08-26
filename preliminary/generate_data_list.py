@@ -66,6 +66,13 @@ def parse_label_by_filename(fn):
     elif bool(re.search(r"/SiW-M/(Makeup/Cosmetic|Makeup/Impersonation|Makeup/Obfuscation|Mask/HalfMask|Mask/MannequinHead|Mask/PaperMask|Mask/SiliconeMask|Mask/TransparentMask)/(.+)\.mov", fn)):
         return 3
 
+    if bool(re.search(r"/MSU-MFSD/scene01/real/(.+)\.(mov|mp4)", fn)):
+       return 0
+    if bool(re.search(r"/MSU-MFSD/scene01/attack/attack_client(\d+)_([a-zA-Z]+)_([a-zA-Z]+)_printed_photo_scene01\.(mov|mp4)", fn)):
+       return 1
+    if bool(re.search(r"/MSU-MFSD/scene01/attack/attack_client(\d+)_([a-zA-Z]+)_([a-zA-Z]+)_([a-zA-Z]+)_video_scene01\.(mov|mp4)", fn)):
+       return 2
+
 
 
     if 'CASIA-SURF-CVPR2019' in fn and 'real_part' in fn:
@@ -106,11 +113,11 @@ def parse_label_by_filename(fn):
 
     if 'CASIA_SURF_3DMask' in fn and 'Real' in fn:
         return 0
-    elif 'CASIA_SURF_3DMask' in fn and 'Fake/1' in fn:
-        return 1
-    elif 'CASIA_SURF_3DMask' in fn and 'Fake/2' in fn:
-        return 2
-    elif 'CASIA_SURF_3DMask' in fn and 'Fake/3' in fn:
+    #elif 'CASIA_SURF_3DMask' in fn and 'Fake/1' in fn:
+    #    return 1
+    #elif 'CASIA_SURF_3DMask' in fn and 'Fake/2' in fn:
+    #    return 2
+    elif 'CASIA_SURF_3DMask' in fn and 'Fake' in fn:
         return 3
 
     if 'CASIA-HiFi-Mask' in fn:
@@ -169,7 +176,7 @@ if __name__ == "__main__":
     #                          regx=r"(.+)/ROSE-YOUTU/(train|test)/(.+)/[^G](.+)\.png")
 
 
-    # IDIAP REPLAY-ATTACK
+    # ======================================= IDIAP REPLAY-ATTACK ==================================================
     # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-ALL",
     #                          regx=r"(.+)/REPLAY-ATTACK/(.+)\.png")
     # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-TRAIN",
@@ -178,6 +185,12 @@ if __name__ == "__main__":
     #                          regx=r"(.+)/REPLAY-ATTACK/devel/(.+)\.png")
     # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/REPLAY-ATTACK', subset_name="REPLAY-ATTACK-TEST",
     #                          regx=r"(.+)/REPLAY-ATTACK/test/(.+)\.png")
+
+    # ======================================= MSU-MFSD ==================================================
+    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/MSU-MFSD', subset_name="MSU-MFSD",\
+                             regx=r"(.+)MSU-MFSD/(.+)\.png")
+
+
 
     # #  ================================================ OULU-NPU ==============================================
     # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/OULU-NPU', subset_name="OULU-NPU-TRAIN",
@@ -417,22 +430,17 @@ if __name__ == "__main__":
     #                          regx=r"/(.+)test(.+)/color/(.+).jpg")
 
     # CASIA-SURF 3DMASK
-    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-3DMASK/', subset_name="CASIA-SURF-COLOR_ALL",
-    #                          regx=r"/(.+)/color/(.+).jpg")
-    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name= "CASIA-SURF-COLOR_TRAIN",
-    #                          regx=r"/(.+)train(.+)color/(.+).jpg")
-    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name="CASIA-SURF-COLOR_VAL",
-    #                          regx=r"/(.+)val(.+)/color/(.+).jpg")
-    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-SURF-CVPR2019/', subset_name= "CASIA-SURF-COLOR_TEST",
-    #                          regx=r"/(.+)test(.+)/color/(.+).jpg")
+    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA_SURF_3DMask/', subset_name="CASIA-SURF-3DMASK-ALL",
+                             regx=r"(.+).png")
+
 
     # CASIA HiFi Mask
-    write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TRAIN",
-                               regx=r"(.+)/(\d+)_([0-3]\d|4[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
-    write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-DEV",
-                            regx=r"(.+)/(\d+)_(4[6-9]|5[0-1])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
-    write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TEST",
-                              regx=r"(.+)/(\d+)_(5[2-9]|6[0-9]|7[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TRAIN",
+    #                            regx=r"(.+)/(\d+)_([0-3]\d|4[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-DEV",
+    #                         regx=r"(.+)/(\d+)_(4[6-9]|5[0-1])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TEST",
+    #                           regx=r"(.+)/(\d+)_(5[2-9]|6[0-9]|7[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
 
     # TODO: CSMAD
     #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CSMAD/',
@@ -449,5 +457,7 @@ if __name__ == "__main__":
     # TODO: WFFD
 
     # TODO PADAISI
+
+
 
 

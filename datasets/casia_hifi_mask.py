@@ -3,7 +3,7 @@ Function: Load Data for Face Anti-spoofing According to Defined Protocols
 Author: AJ
 Date: 2021/1/15
 """
-import os, glob, torch, cv2, copy
+import os, glob,copy
 
 import re
 
