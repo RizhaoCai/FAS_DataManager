@@ -2,6 +2,7 @@
 import os
 import re
 from datasets.casia_hifi_mask import CASIA_HiFiMask
+import pandas as pd
 def parse_label_by_filename(fn):
 
     """
@@ -120,8 +121,7 @@ def parse_label_by_filename(fn):
     elif 'CASIA_SURF_3DMask' in fn and 'Fake' in fn:
         return 3
 
-    if 'CASIA-HiFi-Mask' in fn:
-        return CASIA_HiFiMask.parse_label_by_name(fn)
+
 
 
 
@@ -153,6 +153,53 @@ def write_protocol_list_file(base_dir, subset_name, regx, output_dir='./'):
         for fn in filtered_fns:
             label = parse_label_by_filename(fn)
             f.write(fn + ',' + str(label) + "\n")
+
+def write_protocol_list_wmca(base_dir, protocol_csv_file, protocol='GRANDTEST'):
+
+    csv = pd.read_csv(protocol_csv_file, header=None)
+    h5_name_list, label_list, attack_list, set_list = csv[0], csv[1], csv[2], csv[3]
+
+    fns = get_filenames_under_base_dir(base_dir)
+
+    regx = "(.+)WMCA(.+).png"
+    filtered_fns = list(filter(lambda fn: re.fullmatch(regx, fn), fns))
+
+
+    output_dir = '.'
+    os.makedirs(output_dir + "/data_list/", exist_ok=True)
+
+    protocol_train_file_path = os.path.join(output_dir,"data_list",  protocol + "-TRAIN.csv")
+    protocol_test_file_path = os.path.join(output_dir, "data_list", protocol + "-TEST.csv")
+    protocol_dev_file_path = os.path.join(output_dir, "data_list", protocol + "-DEV.csv")
+
+
+    with open(protocol_train_file_path, "w") as f_train,\
+        open(protocol_test_file_path, "w") as f_test,\
+        open(protocol_dev_file_path, "w") as f_dev:
+        for fn in filtered_fns:
+
+            # simport pdb; pdb.set_trace()
+            # label = parse_label_by_filename(fn)
+            split_name = os.path.join(*fn.split('/')[-4:-1]).replace('.hdf5', '')
+
+            for i in range(len(h5_name_list)):
+                if h5_name_list[i] == split_name:
+                    break
+            spoofing_label, attack_type, set_type = label_list[i], attack_list[i], set_list[i]
+
+            if '3D' in attack_type:
+                label = 3
+            elif 'replay' in attack_type:
+                label = 2
+            elif 'prints' in attack_type:
+                label = 1
+
+            if set_type == 'train':
+                f_train.write(fn + ',' + str(label) + "\n")
+            elif set_type == 'eval':
+                f_test.write(fn + ',' + str(label) + "\n")
+            elif set_type == 'dev':
+                f_dev.write(fn + ',' + str(label) + "\n")
 
 
 if __name__ == "__main__":
@@ -187,8 +234,8 @@ if __name__ == "__main__":
     #                          regx=r"(.+)/REPLAY-ATTACK/test/(.+)\.png")
 
     # ======================================= MSU-MFSD ==================================================
-    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/MSU-MFSD', subset_name="MSU-MFSD",\
-                             regx=r"(.+)MSU-MFSD/(.+)\.png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/MSU-MFSD', subset_name="MSU-MFSD",\
+    #                          regx=r"(.+)MSU-MFSD/(.+)\.png")
 
 
 
@@ -430,8 +477,8 @@ if __name__ == "__main__":
     #                          regx=r"/(.+)test(.+)/color/(.+).jpg")
 
     # CASIA-SURF 3DMASK
-    write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA_SURF_3DMask/', subset_name="CASIA-SURF-3DMASK-ALL",
-                             regx=r"(.+).png")
+    # write_protocol_list_file(base_dir='/home/rizhao/data/FAS/frames/CASIA_SURF_3DMask/', subset_name="CASIA-SURF-3DMASK-ALL",
+    #                         regx=r"(.+).png")
 
 
     # CASIA HiFi Mask
@@ -442,18 +489,18 @@ if __name__ == "__main__":
     # write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CASIA-HiFi-Mask-crop3/', subset_name="HIFI-P1-TEST",
     #                           regx=r"(.+)/(\d+)_(5[2-9]|6[0-9]|7[0-5])_(\d+)_(\d+)_(\d+)_(\d+)/(.+)\.png")
 
-    # TODO: CSMAD
-    #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/CSMAD/',
-    #                         subset_name="CSMAD-ALL",
-    #                          regx=r"(.+)/CSMAD/(.+)\.h5")
+    # CSMAD
+
 
     # TODO: 3DMAD
     #write_protocol_list_file(base_dir='/home/Dataset/Face_Spoofing/3DMAD/',
     #                         subset_name="3DMAD-ALL",
-   #                          regx=r"(.+)/3DMAD/(.+)\.h5")
+    #                          regx=r"(.+)/3DMAD/(.+)\.h5")
 
-    # TODO: WMCA
 
+    # csv_path = 'preliminary/PROTOCOL-grandtest.csv'
+    # write_protocol_list_wmca(base_dir='/home/rizhao/data/FAS/frames/WMCA/WMCA_preprocessed_RGB/WMCA/face-station/',
+    #                          protocol_csv_file=csv_path)
     # TODO: WFFD
 
     # TODO PADAISI

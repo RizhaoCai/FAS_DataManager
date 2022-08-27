@@ -26,27 +26,29 @@ import pdb
 detector = MtcnnDetector(model_folder='mxnet_mtcnn_face_detection/model', ctx=mx.cpu(0), num_worker=1,
                          accurate_landmark=False)
 
-def detect_face_and_save_landmarks(image_name, image_frame=None):
+def detect_face_and_save_landmarks(image_name, image_frame=None, landmark_file_suffix="_bbox_mtccnn.txt"):
     global detector
     if image_frame is None:
         image_frame = cv2.imread(image_name)
 
     results = detector.detect_face(image_frame)
     if results is not None:
-        total_boxes = results[0][0].astype(np.int)
-        points = results[1][0].astype(np.int)
+        total_boxes = results[0][0].astype(np.int32)
+        points = results[1][0].astype(np.int32)
 
         # if height > args.max_size or width > args.max_size:
         #    pass
         # save crop
         str_to_write = ""
+        #if total_boxes[0]<=0 or total_boxes[1]<=0 or total_boxes[2] <=0 or total_boxes[3]<=0:
+        #    import pdb; pdb.set_trace()
         str_to_write += "{},{},{},{},{}".format(total_boxes[0], total_boxes[1], total_boxes[2], total_boxes[3],
                                                 total_boxes[4])
         str_to_write += "\n"
         str_to_write += "{},{},{},{},{},{},{},{},{},{}".format(points[0], points[1], points[2], points[3], points[4],
                                                                points[5], points[6], points[7], points[8], points[9])
         # string_boxes = "%d\t%d" % (face_count, frame_count)
-        bbox_info_file_path = image_name.replace('.png', "_bbox_mtccnn.txt")
+        bbox_info_file_path = image_name.replace('.png', landmark_file_suffix)
         print('Write bbox info to ', bbox_info_file_path)
         with open(bbox_info_file_path, 'w') as f:
             f.write(str_to_write)
@@ -131,6 +133,7 @@ if __name__ == "__main__":
     DATASET_DIR = {
         'OULU-NPU': 'OULU-NPU/*/*.avi',  #
         'CASIA-FASD': 'CASIA-FASD/*/*/*.avi',  #
+        'CASIA-FASD_t': 'CASIA-FASD/train_release/1/*.avi',  #
         'REPLAY-ATTACK': 'REPLAY-ATTACK/*/*/*.mov',  #
         'REPLAY-ATTACK-SPOOF': 'REPLAY-ATTACK/*/*/*/*.mov',  #
         'SIW': 'SIW/*/*/*/*.mov',
